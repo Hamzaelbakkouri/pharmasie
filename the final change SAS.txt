@@ -1,0 +1,429 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct buy_Date buy_Date;
+ struct buy_Date {
+	char pd[20];//purchase date
+    int purchasequatity;//second quantity
+};
+
+typedef struct sell sell;
+ struct sell
+ {
+ float totalprice;
+ int BQ;
+ buy_Date bd;
+ };
+ typedef struct Medicine Medicine;
+  struct Medicine
+ {
+ int code,quantity;//code and first quantity
+ float price;
+ char medicineName[100],Mfg_Date[20],Exp_Date[20];
+ sell n; 
+}m[1000];
+
+ Medicine p;//help in sort
+ void purchaseMedicine(int number);
+ void stockOfMedicine(int number);
+ int addMedicineinStore(int number,struct Medicine m[]);
+ void deleteMedicineStore(int number);
+ void changeMedicineDetails(int number);
+ void sale_static(int number);
+ 
+ main() 
+ {
+ int i,j,choice,number=0,c;
+ 
+ do
+{
+ printf("\n");
+ printf("                                   ||||   WELCOME TO YOUR PHARMACY    ||||                                                                         \n");
+ printf("                                   |     1 - Purchase Medicine           |                                                                         \n");
+ printf("                                   | ____________________________________|                                                                         \n");
+ printf("                                   |     2 - Stock of Medicine in Store  |                                                                         \n");
+ printf("                                   | ____________________________________|                                                                         \n");
+ printf("                                   |     3 - Add a Medicine you want     |                                                                         \n");
+ printf("                                   | ____________________________________|                                                                         \n");
+ printf("                                   |     4 - Delete a Medicine           |                                                                         \n");
+ printf("                                   | ____________________________________|                                                                         \n");
+ printf("                                   |     5 - Change Quantity of Medicine |                                                                         \n");
+ printf("                                   | ____________________________________|                                                                         \n");
+ printf("                                   |     6 - sale static                 |                                                                         \n");
+ printf("                                   ||||                               ||||                                                                         \n");
+ v:
+ 	printf("enter your choice \n");
+ if(scanf("%d",&choice)==0){	
+ fflush(stdin);
+ goto v;
+ }
+ switch(choice) 
+{
+ case 1: 
+{
+ purchaseMedicine(number+1);
+ break;
+ 
+}
+ 
+ case 2: 
+{
+ stockOfMedicine(number);
+ break;
+ 
+}
+
+ case 3: 
+{
+ number=addMedicineinStore(number,m);
+ break;
+ 
+}
+ case 4: 
+{
+ deleteMedicineStore(number+1);
+ break;
+ 
+}
+ case 5: 
+{
+ changeMedicineDetails(number+1);
+ break;
+ 
+}
+case 6: 
+{
+ sale_static(number);
+ break;
+}
+}
+up:
+ printf("To Continue with other Options Enter 1 Else any other number\n");
+ if(scanf("%d",&c)==0){	
+ fflush(stdin);
+ goto up;
+ }
+ system("cls");
+}
+while(c==1);
+}
+
+
+ void purchaseMedicine(int number) 
+{
+ int code,check,i;
+ float TTC = 1.15;
+ char name[100];
+ printf("Enter 1 if you know code else any other number to enter Name of Medicine\n");
+ fflush(stdin);
+ scanf("%d",&check);
+ if(check==1) 
+{
+ x:
+ printf("Enter code to purchase Medicine\n");
+ if(scanf("%d",&code)==0){	
+ fflush(stdin);
+ goto x;
+ }
+	
+ 
+ 
+ for(i=0;i<=number;i++) 
+{
+ if(m[i].code==code) 
+{
+ int c;
+ printf("Enter purchase date \n");
+    fflush(stdin);
+    scanf("%s",&m[i].n.bd.pd);
+ printf("These are the details of Medicine\n");
+ printf("Name:%s\nPrice=%.2f\nAvailable Quantity=%d\nMfg Date=%s\nExp Date= %s\npurchase date=%s\n ",m[i].medicineName,m[i].price,m[i].quantity,m[i].Mfg_Date,m[i].Exp_Date,m[i].n.bd.pd);
+ printf("Do you want to purchase %s \nIf Yes Enter 1 else any other number\n",m[i].medicineName);
+ fflush(stdin);
+ scanf("%d",&c);
+ if(c==1) 
+{
+ printf("Enter Quantity to Purchase\n");
+ scanf("%d",&m[i].n.bd.purchasequatity);
+ if(m[i].quantity>=m[i].n.bd.purchasequatity)
+{
+	m[i].n.totalprice+=m[i].n.bd.purchasequatity*m[i].price;
+ printf("Total Price to be paid=%.2f\n",m[i].n.bd.purchasequatity* m[i].price*TTC);
+}
+ else
+{
+ printf("Please Enter quantity below Available Quantity\n");
+ 
+}
+ 
+}
+ break;
+ 
+}
+ 
+}if(m[i].code !=code) 
+{
+ printf("Entered code Not Found\n");
+ 
+}
+ 
+}
+ else 
+{
+ printf("Enter Name to search and Purchase\n");
+ fflush(stdin);
+ gets(name);
+ for(i=0;i<number;i++) 
+{
+ if(strcmp(m[i].medicineName,name)==0) 
+{
+ int c;
+ printf("These are the details of Medicine\n");
+ printf("Name=%s\nPrice=%d\nAvailable Quantity=%d\nMfg Date=%s\nExp Date=%s\n ",m[i].medicineName,m[i].price,m[i].quantity,m[i].Mfg_Date,m[i].Exp_Date);
+ 
+ 
+
+ printf("Do you want to purchase %s \nIf Yes Enter 1 else any other number\n",m[i].medicineName);
+ fflush(stdin);
+ scanf("%d",&c);
+ if(c==1) 
+{
+ printf("Enter Quantity to Purchase\n");
+ scanf("%d",&m[i].n.bd.purchasequatity);
+ if(m[i].quantity>m[i].n.bd.purchasequatity) 
+{
+ printf("Total Price to be paid=%d\n",m[i].n.bd.purchasequatity*m[i].price);
+ 
+}
+ else
+{
+ printf("Please Enter quantity below Available Quantity\n");
+ 
+}
+ 
+}
+ break;
+ 
+}
+ 
+}
+ if(strcmp(m[i].medicineName,name)!=0) 
+{
+ printf("Entered Name Not Found\n");
+ 
+}
+ 
+}
+ 
+}
+
+
+
+ void stockOfMedicine(int number)
+{
+ int i;
+ int k;
+ 
+ 
+ if(number!=0) 
+{
+     printf("press 1 for stock with price / press 2 for stock with alphabet \n ");
+     int type_sort;
+     fflush(stdin);
+     scanf("%d",&type_sort);
+     int j;
+     if(type_sort == 1){
+	 printf("the stock with price \n ");
+	for( k=0;k<number;k++){
+		j=k;
+		while(m[j].price<m[j+1].price)
+    {
+			p=m[j+1];
+			m[j+1]=m[j];
+			m[j]=p;
+			j++;
+		}
+		
+	}
+	}
+	   if(type_sort == 2){
+	printf("the stock with alphabet \n ");   
+	for( k=0;k<number-1;k++){
+		j=k;
+		while(strcmp(m[j].medicineName,m[j+1].medicineName)>0){
+			p=m[j];
+			m[j]=m[j+1];
+			m[j+1]=p;
+		}
+	}	
+}
+ for(i=0;i<number;i++) 
+{
+ if(m[i].code!=0)
+{
+ printf("code=%d  Name=%s  Price=%.2f  \n Available Quantity=%d   Mfg Date=%s   Exp Date=%s   \n",m[i].code,m[i].medicineName,m[i].price,(m[i].quantity)-(m[i].n.bd.purchasequatity),m[i].Mfg_Date,m[i].Exp_Date);
+ printf("***\n");
+}
+}
+}
+ else
+{
+ printf("No Items or Medicines Available\n");
+ 
+}
+}
+ int addMedicineinStore(int number,struct Medicine m[]) 
+{
+	int i;
+	int f=0;
+	do{
+ char name[100];
+ int flag=0;
+ do{
+ 	flag=0;
+ printf("Enter Medicine code\n");
+    fflush(stdin);
+    scanf("%d",&(m[number].code));
+    for( i=0;i<number;i++){
+    	if(m[i].code == m[number].code){	
+    	flag = 1;
+    	printf("the code is already using\n");
+		}	
+	}
+    }while(flag==1);
+ printf("Enter Medicine Name\n");
+    fflush(stdin);
+    gets(name);
+ strcpy(m[number].medicineName,name);
+ printf("Enter Manufactured Date\n");
+    fflush(stdin);
+    gets(m[number].Mfg_Date);
+ printf("Enter Expiry Date\n");
+    fflush(stdin);
+    gets(m[number].Exp_Date);
+ printf("Enter Quantity\n");
+    fflush(stdin);
+    scanf("%d",&(m[number].quantity));
+ printf("Enter Price\n");
+    fflush(stdin);
+    scanf("%f",&(m[number].price));
+ printf("Medicine with code %d Added Successfully\n",m[number].code);
+  ++number;
+  printf("if you want to add an other one enter 0 else any number \n");
+  scanf("%d",&f);
+ }while(f == 0);
+ return number;
+ }
+ 
+
+
+ void deleteMedicineStore(int number) 
+{
+ int code,i,flag=0,num;
+ printf("Enter code to be deleted\n");
+ fflush(stdin);
+ scanf("%d",&code);
+ for(i=0;i<number;i++) 
+{
+ if(m[i].code==code) 
+{
+ flag=1;
+ m[i].code=0;
+ m[i].price=0;
+ m[i].quantity=0;
+ strcpy(m[i].medicineName,"");
+ strcpy(m[i].Mfg_Date,"");
+ strcpy(m[i].Exp_Date,"");
+ 
+ num=i;
+ break;
+ 
+}
+ 
+}
+ if(flag==1) 
+{
+ printf("Medicine with %d is Deleted Successfully\n",code);
+ 
+}
+ 
+}
+
+ void changeMedicineDetails(int number) 
+{
+ int code,quantity,choice,c,i;
+ printf("Enter code to change Details\n");
+ scanf("%d",&code);
+ for(i=0;i<number;i++) 
+{
+ if(m[i].code==code && m[i].code!=0) 
+{
+ do 
+{
+ printf("1 - Change Quantity\n");
+ scanf("%d",&choice);
+ if(choice==1) 
+{
+ int quantity;
+ printf("Enter Quantity to be changed\n");
+ fflush(stdin);
+ scanf("%d",&quantity);
+ m[i].quantity=quantity;
+ printf("Quantity changed Successfully\n");
+ 
+}
+
+ 
+}
+while(c==1);
+ break;
+ 
+}
+ 
+}
+}
+
+void sale_static(int number)
+{
+	int i;
+	int t=0;
+	float total_price,sell_price;
+	float ttc=1.15;
+	float maxprice=0;
+	float minprice;
+	char date[20];
+	
+	printf("enter the date :");
+	 fflush(stdin);
+	 scanf("%s",&date);
+	 for(i=0;i<100;i++)
+	 {
+	 	if(strcmp(date,m[i].n.bd.pd)==0)
+		 {
+	 	total_price +=(m[i].price)*m[i].n.bd.purchasequatity;
+	 	sell_price  +=m[i].price;
+	 	t=1;
+	 	
+	 	if(m[i].price>maxprice)
+		 {
+	 		maxprice=m[i].price*m[i].n.bd.purchasequatity;
+		 }
+	 		
+		 }
+	 }	 
+	 minprice=maxprice;
+	 for(i=0;i<number;i++)
+	 	if(strcmp(date,m[i].n.bd.pd))
+	 	if(m[i].price<minprice) minprice = m[i].price; 
+	 if(t==1)
+	 {
+	 	printf("the total price of medicine for this date %s was %.2f \n",date,(total_price)*(ttc));
+	 	printf("the average price of medicine for this date %s was %.2f \n",date,(total_price/sell_price)*(ttc));
+	 	printf("maximum price of one medicine for this date %s was %.2f \n",date,(maxprice)*(ttc));
+	 	printf("minimum price of one medicine for this date %s was %.2f \n",date,(minprice)*(ttc));
+	 }else
+	 {
+	 	printf("no medicine purchase in this date \n");
+	 }
+}
